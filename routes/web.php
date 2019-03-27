@@ -1,5 +1,7 @@
 <?php
 
+use App\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,7 +52,7 @@ Route::get('/', function () {
 
 // Route::get('/insert', function(){
 
-//     DB::insert('insert into posts(title, content) values(?, ?)', ['PHP with laravel', 'Laravel is the best thing that has happened to PHP']);
+//     DB::insert('insert into posts(title, content) values(?, ?)', ['teste', 'Laravel is a test']);
 
 // });
 
@@ -67,7 +69,7 @@ Route::get('/', function () {
 
 // Route::get('/update', function(){
 
-//     $updated = DB::update('update posts set title="Updated title" where id=?', [1]);
+//     $updated = DB::update('update posts set title="PHP" where id=?', [4]);
 
 //     return $updated;
 
@@ -78,5 +80,157 @@ Route::get('/', function () {
 //     $deleted = DB::delete('delete from posts where id=?', [1]);
 
 //     return $deleted;
+
+// });
+
+
+/*
+|--------------------------------------------------------------------------
+| Eloquent
+|--------------------------------------------------------------------------
+*/
+
+//SELECT * FROM 'table';
+
+// Route::get('/read', function(){
+
+//     $posts = Post::all();
+
+
+//     foreach($posts as $post){
+
+//         return $post->title;
+
+//     }
+
+// });
+
+//Try to find the data by id
+
+// Route::get('/find', function(){
+
+//     $post = Post::find(2);
+
+
+//     return $post->content;
+// });
+
+// Filtro utilizando where, ordenando pelo id de forma crescente, trazendo apenas 3 linhas de dados e enfim o ultimo elemento traz até o código
+
+// Route::get('/findwhere', function(){
+
+//     $posts = Post::where('title', 'PHP')->orderBy('id', 'asc')->take(3)->get();
+
+//     return $posts;
+
+// });
+
+// Tenta encontrar o dado com id 'x' ou se não encontrar retornar um fail
+
+// Route::get('/findmore', function(){
+
+//     // $posts = Post::findOrfail(3);
+
+//     // return $posts;
+
+// Faz uma busca onde a coluna 'users_count' tem que ser < que 50 trazendo apenas o primeiro, ou retornado um fail caso nenhum seja encontrado com a primeira condição
+
+//     $posts = Post::where('users_count', '<', 50)->firstOrFail();
+
+// });
+
+
+// O comando save() pode fazer um insert na tabela caso ele seja instanciado, ou fazer um update caso vc faça um find no lugar de instanciar
+
+// Route::get('/basicinsert', function(){
+
+//     $post = new Post;
+
+//     $post->title = 'Test new Eloquent title insert';
+//     $post->content = 'Test eloquent, its incredible';
+
+//     $post->save();
+
+// });
+
+// Route::get('/basicinsert2', function(){
+
+//     $post = Post::find(2);
+
+//     $post->title = 'Test new Eloquent title insert';
+//     $post->content = 'Test eloquent, its incredible';
+
+//     $post->save();
+
+// });
+
+// m
+
+// Route::get('/create', function(){
+
+//     Post::create(['title'=>'the cratte methoddafasfa', 'content'=>'test ttest teste stest test testasdfafa']);
+
+// });
+
+
+// Route::get('/update', function(){
+
+//     Post::where('id', 2)->where('is_admin', 0)->update(['title'=>'NEW PHP TITLE', 'content'=>'Just a single test']);
+
+// });
+
+
+// Route::get('/delete', function(){
+
+//     $post = Post::find(6);
+
+//     $post->delete();
+
+// });
+
+
+// // Posso usar esse método para dar um delete em um dado ou em vários, para deletar vários de uma vez, precisamos passar os id's dentro de um array
+
+// Route::get('/delete2', function(){
+
+//     Post::destroy([8, 9]);
+
+//     //Ou
+
+//     // Post::where('is_admin', 0)->delete();
+
+// });
+
+// // Com o 'softdelete' o laravel não irá apagar o dado da tabela definitivamente, mas sim preencher o campo 'deleted_at' que antes se encontrava vazio.
+// Route::get('/softdelete', function(){
+
+//     Post::find(5)->delete();
+
+// });
+
+// // Se tentarmos buscar este arquivo que foi "deletado" pelo softdelete, na hora do return ele não irá trazer nada. Agora se usarmaos o metodo staticamente 'withTrashed()' e fazer um filtro daquele dado anterior, será possível retorna-lo na tela.
+// Route::get('/readsoftdelete', function(){
+
+//     // $post = Post::find(5);
+
+//     // return $post;
+
+//     $post = Post::withTrashed()->where('id', 5)->get();
+
+//     return $post;
+
+// });
+
+// // O dado que fui deletado através do softdelete() será restaurado através do método 'restore()', logo o campo 'deleted_at' volta a ter o valor null.
+// Route::get('/restore', function(){
+
+//     Post::withTrashed()->where('is_admin', 0)->restore();
+    
+// });
+
+// // Este método irá apenas buscar os itens softdeleted e vai exclui-los definitivamente do database com o método 'forceDelete()'
+// Route::get('/forcedelete', function(){
+
+//     Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
 
 // });
