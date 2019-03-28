@@ -234,3 +234,12 @@ Route::get('/', function () {
 //     Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
 
 // });
+
+/*
+|--------------------------------------------------------------------------
+| CRUD Application
+|--------------------------------------------------------------------------
+*/
+
+
+Route::resource('/posts', 'PostsController');
