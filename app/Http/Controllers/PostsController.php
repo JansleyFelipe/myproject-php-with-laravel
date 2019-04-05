@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostValidation;
 
 class PostsController extends Controller
 {
@@ -19,7 +19,9 @@ class PostsController extends Controller
         $posts = Post::all();
 
 
-        return view('posts.index', compact('posts'));
+        return view('posts.index', ["posts"=> $posts]);
+        // return view('posts.index', compact('posts'));
+
     }
 
     /**
@@ -40,7 +42,7 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostValidation $request)
     {
         //
 
@@ -57,7 +59,7 @@ class PostsController extends Controller
 
         $post = new Post;
         $post->title = $request->title;
-        $post->content = $request->title;
+        $post->content = $request->content;
         $post->save();
 
         return redirect('/posts');
@@ -101,14 +103,14 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostValidation $request, $id)
     {
         //
 
         $post = Post::findOrFail($id);
 
         $post->update($request->all());
-
+        // $request->session()->flash('status', 'Post was successful updated!');
         return redirect('/posts');
     }
 

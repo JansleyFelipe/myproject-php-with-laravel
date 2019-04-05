@@ -1,6 +1,10 @@
 <?php
 
 use App\Post;
+use App\User;
+use App\Country;
+use App\Photo;
+use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +40,8 @@ Route::get('/', function () {
 
 // Route::get('/post/{id}', 'PostsController@index');
 
-// Route::resource('posts', 'PostsController');
+Route::resource('posts', 'PostsController', ['only' => ['create', 'store']]);
+Route::resource('posts', 'PostsController');
 
 // Route::get('/contact', 'PostsController@contact');
 
@@ -242,4 +247,138 @@ Route::get('/', function () {
 */
 
 
-Route::resource('/posts', 'PostsController');
+//OneToOne relationship
+
+// Route::get('/user/{id}/post', function($id){
+
+//     return User::find($id)->post;
+
+// });
+
+//OneToOne relationship caminho inverso
+// Route::get('/post/{id}/user', function($id){
+
+//     return Post::find($id)->user;
+
+// });
+
+//OneToMany Relationship
+// Route::get('/posts', function(){
+
+
+//     $user = User::find(1);
+
+//     foreach($user->posts as $post){
+
+//         echo $post->title . '<br>';
+
+//     }
+
+// });
+
+
+//ManyToMany Relationship
+// Route::get('/user/{id}/role', function($id){
+
+
+//     $user = User::find($id)->roles()->orderBy('id')->get();
+//     return $user;
+
+//     // foreach($user->roles as $role){
+
+//     //     echo $role->name . '<br>';
+
+//     // }
+
+// });
+
+
+// Accessing the intermediate table / pivot
+Route::get('user/pivot', function(){
+
+    $user = User::find(2);
+
+    foreach($user->roles as $role){
+        
+        echo $role->pivot;
+    }
+
+
+});
+
+
+Route::get('user/country', function(){
+
+    $country = Country::find(1);
+
+    foreach($country->posts as $post){
+
+        echo $post->title . '<br>';
+
+    }
+
+});
+
+
+// Polymorphic Relations
+Route::get('user/photos', function(){
+
+    $user = User::find(1);
+
+    foreach($user->photos as $photo){
+
+        echo $photo . '<BR>';
+
+    }
+
+
+});
+
+Route::get('post/photos', function(){
+
+    $post = Post::find(1);
+
+    foreach($post->photos as $photo){
+
+        echo $photo . '<BR>';
+
+    }
+
+
+});
+
+// Polymorphic relation the inverse
+Route::get('photo/{id}/post', function($id){
+
+    $photo = Photo::findOrFail($id);
+
+    return $photo->imageable;
+
+});
+
+// Polymorphic ManyToMany
+Route::get('post/tag', function(){
+
+
+    $post = Post::find(1);
+
+    foreach($post->tags as $tag){
+
+        echo $tag->name;
+
+    }
+
+});
+
+
+Route::get('tag/post', function(){
+
+    $tag = Tag::find(2);
+
+    foreach($tag->posts as $post){
+
+        echo $post->title;
+
+    }
+
+});
